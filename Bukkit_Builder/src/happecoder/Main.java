@@ -34,6 +34,14 @@ public class Main extends JavaPlugin {
 			builder.new Array(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]))
 					.build(args[3].equalsIgnoreCase("t"));
 		}
+		if (command.getName().equalsIgnoreCase("cup")) {
+			builder.new Cup(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]))
+					.build(args[3].equalsIgnoreCase("t"));
+		}
+		if (command.getName().equalsIgnoreCase("box")) {
+			builder.new Box(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]))
+					.build(args[3].equalsIgnoreCase("t"));
+		}
 		return false;
 	}
 }

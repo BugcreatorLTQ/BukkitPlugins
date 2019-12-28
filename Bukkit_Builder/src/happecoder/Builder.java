@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 
 public class Builder {
 
-	private Location loc;
+	private Location builderLocation;
 	// Block Type
 	private Material type;
 	// sender
@@ -17,7 +17,7 @@ public class Builder {
 	public Builder(CommandSender sender) {
 		if (sender instanceof Player) {
 			this.sender = sender;
-			loc = ((Player) sender).getLocation();
+			builderLocation = ((Player) sender).getLocation();
 			type = Material.STONE;
 		} else {
 			new Exception("src not player");
@@ -32,22 +32,12 @@ public class Builder {
 		this.type = type;
 	}
 
-	public Builder add(int x, int y, int z) {
-		return add(new Vector(x, y, z));
-	}
-
-	public Builder add(Vector v) {
-		Builder builder = new Builder(sender);
-		builder.loc = loc.add(v);
-		return builder;
-	}
-
 	protected abstract class Basic {
 
 		public void build(boolean flag) {
-			Location temp = loc.clone();
+			Location temp = builderLocation.clone();
 			building(flag);
-			loc = temp.clone();
+			builderLocation = temp.clone();
 		}
 
 		protected abstract void building(boolean flag);
@@ -81,11 +71,67 @@ public class Builder {
 			for (int i = 0; i != size.getBlockX(); i += step.getBlockX()) {
 				for (int j = 0; j != size.getBlockY(); j += step.getBlockY()) {
 					for (int k = 0; k != size.getBlockZ(); k += step.getBlockZ()) {
-						setBlock(loc.clone().add(i, j, k), type, flag);
+						setBlock(builderLocation.clone().add(i, j, k), type, flag);
 					}
 				}
 			}
 		}
+	}
+
+	public class Cup extends Basic {
+
+		protected Vector size, step;
+
+		public Cup(int x, int y, int z) {
+			this(new Vector(x, y, z));
+		}
+
+		public Cup(Vector size) {
+			this.size = size.clone();
+			step = size.clone().divide(Vector.getMaximum(size, size.clone().multiply(-1)));
+		}
+
+		@Override
+		protected void building(boolean flag) {
+			new Array(size.clone().setY(step.getBlockY())).build(flag);
+			new Array(size.clone().setX(step.getBlockX())).build(flag);
+			new Array(size.clone().setZ(step.getBlockZ())).build(flag);
+			builderLocation.add(size.clone().setY(0));
+			new Array(size.clone().setX(step.getBlockX())).build(flag);
+			new Array(size.clone().setZ(step.getBlockZ())).build(flag);
+		}
+
+	}
+
+	public class Box extends Basic {
+
+		protected Vector size, step;
+
+		public Box(int x, int y, int z) {
+			this(new Vector(x, y, z));
+		}
+
+		public Box(Vector size) {
+			this.size = size.clone();
+			step = size.clone().divide(Vector.getMaximum(size, size.clone().multiply(-1)));
+		}
+
+		@Override
+		protected void building(boolean flag) {
+			new Cup(size).build(flag);
+			builderLocation.add(0, size.getBlockY(), 0);
+			new Array(size.clone().setY(-step.getBlockY())).build(flag);
+		}
+
+	}
+
+	public class Line extends Basic {
+
+		@Override
+		protected void building(boolean flag) {
+
+		}
+
 	}
 
 	/**

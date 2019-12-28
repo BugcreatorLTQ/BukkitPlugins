@@ -6,6 +6,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="spigot-1.15.1.jar"/>
+	<classpathentry kind="lib" path="/home/lain/Documents/Code/Java/BukkitPlugins/spigot-1.15.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
