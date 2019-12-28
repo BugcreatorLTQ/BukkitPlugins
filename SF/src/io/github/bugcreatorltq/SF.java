@@ -26,7 +26,6 @@ public class SF {
 			return;
 		}
 		sfTruck.put(target, new Pair<Player, ItemStack>(srouce, sendItem.clone()));
-		System.out.println(sfTruck.size());
 		// delete item
 		sendItem.setType(Material.AIR);
 		target.sendMessage(srouce.getName() + " want give you" + getItemInfo(sendItem)
@@ -35,7 +34,6 @@ public class SF {
 
 	public static void accept(Player target, boolean flag) {
 		// get Source-itemStack Pair
-		System.out.println(sfTruck.size());
 		Pair<Player, ItemStack> pair = sfTruck.get(target);
 		if (pair == null) {
 			return;
