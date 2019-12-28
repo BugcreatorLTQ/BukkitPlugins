@@ -10,6 +10,7 @@ public class Main extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		// send sendItem
 		if (command.getName().equalsIgnoreCase("send")) {
 			if (sender instanceof Player) {
 				if (args.length != 1) {
@@ -21,12 +22,14 @@ public class Main extends JavaPlugin {
 				return true;
 			}
 		}
+		// accept sendItem
 		if (command.getName().equalsIgnoreCase("accept")) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, true);
 				return true;
 			}
 		}
+		// ignore sendItem
 		if (command.getName().equalsIgnoreCase("ignore")) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, false);

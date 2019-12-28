@@ -9,26 +9,47 @@ import org.bukkit.inventory.ItemStack;
 
 import com.mojang.datafixers.util.Pair;
 
+/**
+ * SF Express
+ * @author lain
+ *
+ */
 public class SF {
 
-	// save gift info
+	// save sendItem info
 	private static HashMap<Player, Pair<Player, ItemStack>> sfTruck = new HashMap<Player, Pair<Player, ItemStack>>();
 
+	// get sendItem info
 	private static String getItemInfo(ItemStack sendItem) {
 		return " " + sendItem.getType() + " x " + sendItem.getAmount();
 	}
 
-	public static void send(Player srouce, Player target) {
-		PlayerInventory inventory = (PlayerInventory) srouce.getInventory();
+	/**
+	 * send item to target form source
+	 * 
+	 * @param srouce
+	 * @param target
+	 */
+	public static void send(Player source, Player target) {
+		// get player inventory
+		PlayerInventory inventory = (PlayerInventory) source.getInventory();
+		// get item form player hand
 		ItemStack sendItem = inventory.getItemInMainHand();
-		if (sendItem.getAmount()==0) {
-			srouce.sendMessage("you must take what you want to send in your hand");
+		// check item not null
+		if (sendItem.getAmount() == 0) {
+			source.sendMessage("you must take what you want to send in your hand");
 			return;
 		}
-		sfTruck.put(target, new Pair<Player, ItemStack>(srouce, sendItem.clone()));
+		// check target queue
+		if (sfTruck.get(target)==null) {
+			// save sendItem info
+			sfTruck.put(target, new Pair<Player, ItemStack>(source, sendItem.clone()));
+			return;
+		}
 		// delete item
 		sendItem.setType(Material.AIR);
-		target.sendMessage(srouce.getName() + " want give you" + getItemInfo(sendItem)
+		// send message
+		target.sendMessage(source.getName() + " want give you" + getItemInfo(sendItem)
 				+ "\nEnter /accept to accept \nEnter /ignore to ignore");
 	}
 
@@ -38,16 +59,20 @@ public class SF {
 		if (pair == null) {
 			return;
 		}
-		Player srouce = pair.getFirst();
+		Player source = pair.getFirst();
+		// get sendItem
 		ItemStack sendItem = pair.getSecond();
 		if (flag) {
-			srouce.sendMessage("you give " + target.getName() + getItemInfo(sendItem));
-			// send item
+			// accept
 			target.getInventory().addItem(sendItem);
-			target.sendMessage(srouce.getName() + " give you" + getItemInfo(sendItem));
+			// send message
+			source.sendMessage("you give " + target.getName() + getItemInfo(sendItem));
+			target.sendMessage(source.getName() + " give you" + getItemInfo(sendItem));
 		} else {
-			srouce.sendMessage("you are ignored");
-			srouce.getInventory().addItem(sendItem);
+			// ignore
+			source.sendMessage("you are ignored");
+			// turn back sendItem
+			source.getInventory().addItem(sendItem);
 		}
 		// remove info
 		sfTruck.remove(target);
