@@ -50,6 +50,10 @@ public class SF {
 		if (sfTruck.get(target) == null) {
 			// save sendItem info
 			sfTruck.put(target, new Pair<Player, ItemStack>(source, sendItem.clone()));
+		} else {
+			// send message
+			source.sendMessage(target.getName()+" already has one express");
+			target.sendMessage("Pick up your express in time");
 			return;
 		}
 		// delete item
