@@ -1,0 +1,13 @@
+name: builder
+main: happecoder.Main
+version: 1.17
+author: lain
+commands:
+  array:
+    description: You Can Build One array By This Command.
+    usage: /<command> x y z T/F
+    permission-message: "no permission"
+  test:
+    description: This Is A Test Command.
+    usage: /<command> T/F
+    permission-message: "no permission"

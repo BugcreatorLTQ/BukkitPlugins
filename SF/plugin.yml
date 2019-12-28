@@ -1,0 +1,14 @@
+name: SF
+main: io.github.bugcreatorltq.Main
+version: 1.0
+author: lain
+commands:
+  send:
+    description: send items to other player what on you main hand
+    usage: /<command> Player
+  accept:
+    description: accept
+    usage: /<command>
+  ignore:
+    description: ignore
+    usage: /<command>
