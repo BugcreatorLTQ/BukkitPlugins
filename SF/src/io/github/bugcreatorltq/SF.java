@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Pair;
 
 /**
  * SF Express
+ * 
  * @author lain
  *
  */
@@ -31,6 +32,11 @@ public class SF {
 	 * @param target
 	 */
 	public static void send(Player source, Player target) {
+		// check not same one
+		if (source.equals(target)) {
+			source.sendMessage("you can't send to youself!");
+			return;
+		}
 		// get player inventory
 		PlayerInventory inventory = (PlayerInventory) source.getInventory();
 		// get item form player hand
@@ -41,7 +47,7 @@ public class SF {
 			return;
 		}
 		// check target queue
-		if (sfTruck.get(target)==null) {
+		if (sfTruck.get(target) == null) {
 			// save sendItem info
 			sfTruck.put(target, new Pair<Player, ItemStack>(source, sendItem.clone()));
 			return;
