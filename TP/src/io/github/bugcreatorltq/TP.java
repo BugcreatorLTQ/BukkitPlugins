@@ -17,6 +17,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.TextComponent;
+
 /**
  * 传送
  * 
@@ -60,6 +65,18 @@ public class TP implements Listener {
 		return null;
 	}
 
+	// 发送信息
+	private static void sendMessage(Player target) {
+		TextComponent _accept = new TextComponent("点我接受\n");
+		_accept.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/" + accept));
+		_accept.setColor(ChatColor.GREEN);
+		TextComponent _ignore = new TextComponent("点我拒绝");
+		_ignore.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/" + ignore));
+		_ignore.setColor(ChatColor.RED);
+		_accept.addExtra(_ignore);
+		target.spigot().sendMessage(_accept);
+	}
+	
 	/**
 	 * source 传送到 target
 	 * 
@@ -78,11 +95,11 @@ public class TP implements Listener {
 			// 避免重复传送
 			if (src == null || src != source) {
 				// 发送提示信息
-				target.sendMessage(source.getName() + (dire ? "想要传送到你这里" : "邀请你传送到他那里") + "\n输入 /" + accept
-						+ " 接受\n输入 /" + ignore + " 拒绝");
+				target.sendMessage(source.getName() + (dire ? "想要传送到你这里" : "邀请你传送到他那里"));
+				sendMessage(target);
 				// 覆盖别人传送
 				tpMap.put(target.getName(), new Pair<String, Boolean>(source.getName(), dire));
-				// 30s后取消
+				// 一段时间未接受后取消
 				new BukkitRunnable() {
 					@Override
 					public void run() {
@@ -92,9 +109,9 @@ public class TP implements Listener {
 						}
 						source.sendMessage(target.getName() + "很长时间没有接受你的传送请求,已取消传送请求");
 						target.sendMessage("你很长时间没有接受" + source.getName() + "的传送请求,已取消传送请求");
-						tpMap.remove(target.getName());
+						tpMap.remove(target.getName());       
 					}
-				}.runTaskLater(plugin, 30 * 20L);
+				}.runTaskLater(plugin, 50 * 20L);
 			} else {
 				source.sendMessage("你已向该玩家发出过传送请求");
 			}
@@ -108,6 +125,9 @@ public class TP implements Listener {
 	 * @param target
 	 */
 	public static void accept(boolean flag, Player target) {
+		if (tpMap.get(target.getName()) == null) {
+			return;
+		}
 		// 获取传送请求者
 		Player source = getSourcePlayer(target);
 		// 获取方向
@@ -168,6 +188,9 @@ public class TP implements Listener {
 				tp((Player) e.getWhoClicked(), target, dire);
 			}
 		}
+	}
+
+	public void test(Player sender) {
 	}
 
 }

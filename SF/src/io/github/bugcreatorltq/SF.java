@@ -11,6 +11,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.mojang.datafixers.util.Pair;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.ClickEvent.Action;
+
 /**
  * 顺丰快递
  * 
@@ -27,6 +32,18 @@ public class SF {
 	// 获取物品信息
 	private static String getItemInfo(ItemStack sendItem) {
 		return " " + sendItem.getType().name() + " x " + sendItem.getAmount();
+	}
+
+	// 发送信息
+	private static void sendMessage(Player target) {
+		TextComponent _accept = new TextComponent("点我接受\n");
+		_accept.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/" + accept));
+		_accept.setColor(ChatColor.GREEN);
+		TextComponent _ignore = new TextComponent("点我拒绝");
+		_ignore.setClickEvent(new ClickEvent(Action.RUN_COMMAND, "/" + ignore));
+		_ignore.setColor(ChatColor.RED);
+		_accept.addExtra(_ignore);
+		target.spigot().sendMessage(_accept);
 	}
 
 	/**
@@ -87,12 +104,14 @@ public class SF {
 		} else {
 			// 发送提示信息
 			source.sendMessage(target.getName() + "有一个未签收的快递,在他签收之前你不能给他送东西");
-			target.sendMessage("你有一个未签收的快递,请尽快领取\n输入/" + accept + "接收\n输入/" + ignore + "拒绝");
+			target.sendMessage("你有一个未签收的快递,请尽快领取");
+			sendMessage(target);
 			return;
 		}
 		// 发送提示信息
-		target.sendMessage(
-				source.getName() + " 想给你" + getItemInfo(sendItem) + "\n输入 /" + accept + " 接受 \n输入 /" + ignore + " 拒绝");
+		target.sendMessage(source.getName() + " 想给你" + getItemInfo(sendItem));
+		sendMessage(target);
+
 	}
 
 	public static void accept(Player target, boolean flag) {
