@@ -2,3 +2,13 @@ name: TP
 main: io.github.bugcreatorltq.TPPlugin
 version: 1.0
 author: lain
+commands:
+  tpa:
+    description: 传送到一个玩家所在位置
+    usage: /<command> Player
+  tp_accept:
+    description: 接受传送请求
+    usage: /<command>
+  tp_ignore:
+    description: 拒绝传送请求
+    usage: /<command>

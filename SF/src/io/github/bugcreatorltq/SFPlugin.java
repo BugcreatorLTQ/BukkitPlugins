@@ -11,7 +11,7 @@ public class SFPlugin extends JavaPlugin {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// 发送快递
-		if (command.getName().equalsIgnoreCase("send")) {
+		if (command.getName().equalsIgnoreCase(SF.send)) {
 			if (sender instanceof Player) {
 				if (args.length != 1) {
 					sender.sendMessage("参数错误!");
@@ -28,14 +28,14 @@ public class SFPlugin extends JavaPlugin {
 			}
 		}
 		// 接收快递
-		if (command.getName().equalsIgnoreCase(SF.yes)) {
+		if (command.getName().equalsIgnoreCase(SF.accept)) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, true);
 				return true;
 			}
 		}
 		// 拒绝快递
-		if (command.getName().equalsIgnoreCase(SF.no)) {
+		if (command.getName().equalsIgnoreCase(SF.ignore)) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, false);
 				return true;

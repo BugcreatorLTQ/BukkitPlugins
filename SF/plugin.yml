@@ -3,12 +3,12 @@ main: io.github.bugcreatorltq.SFPlugin
 version: 1.0
 author: lain
 commands:
-  send:
+  sf_send:
     description: 发送
     usage: /<command> Player
-  accept:
+  sf_accept:
     description: 接收
     usage: /<command>
-  ignore:
+  sf_ignore:
     description: 拒绝
     usage: /<command>
