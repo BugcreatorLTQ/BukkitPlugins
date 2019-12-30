@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,7 +27,7 @@ public class TP implements Listener {
 	private static int boxSize = 4 * 9;
 	private static Plugin plugin;
 	public static String send = "tpa", accept = "tp_accept", ignore = "tp_ignore", ui = "传送法阵";
-
+	
 	public static void setPlugin(Plugin plugin) {
 		TP.plugin = plugin;
 	}
@@ -121,10 +121,10 @@ public class TP implements Listener {
 			if (player.equals(source)) {
 				continue;
 			}
-			ItemStack skull = new ItemStack(Material.SKELETON_SKULL);
-			SkullMeta sm = (SkullMeta) skull.getItemMeta();
-			sm.setDisplayName(player.getName());
-			skull.setItemMeta(sm);
+			ItemStack skull = new ItemStack(Material.EGG);
+			ItemMeta im = skull.getItemMeta();
+			im.setDisplayName(player.getName());
+			skull.setItemMeta(im);
 			tp_ui.addItem(skull);
 		}
 		source.closeInventory();
@@ -134,6 +134,8 @@ public class TP implements Listener {
 	// 添加容器监听
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
+		if(e.getRawSlot()<0 || e.getRawSlot()>e.getInventory().getSize() || e.getInventory()==null)
+	        return;
 		if (e.getInventory().getSize() == boxSize) {
 			// 禁止拿物品
 			e.setCancelled(true);
