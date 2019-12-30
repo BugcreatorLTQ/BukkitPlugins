@@ -1,10 +1,13 @@
 name: TP
 main: io.github.bugcreatorltq.TPPlugin
-version: 1.0
+version: 1.1
 author: lain
 commands:
   tpa:
     description: 传送到一个玩家所在位置
+    usage: /<command> Player
+  tpahere:
+    description: 传送一个玩家到你所在位置
     usage: /<command> Player
   tp_accept:
     description: 接受传送请求

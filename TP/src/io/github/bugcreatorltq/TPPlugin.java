@@ -10,20 +10,33 @@ public class TPPlugin extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Bukkit.getPluginManager().registerEvents(new TP(),this);
+		Bukkit.getPluginManager().registerEvents(new TP(), this);
 		TP.setPlugin(this);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (command.getName().equalsIgnoreCase(TP.send)) {
+		if (command.getName().equalsIgnoreCase(TP.tpa)) {
 			if (sender instanceof Player) {
 				if (args.length == 0) {
-					TP.tpUI((Player) sender);
+					TP.tpUI((Player) sender, true);
 				} else if (args.length == 1) {
 					Player target = Bukkit.getPlayer(args[0]);
 					if (target.isOnline()) {
-						TP.tp((Player) sender, target);
+						TP.tp((Player) sender, target, true);
+					}
+					return true;
+				}
+			}
+		}
+		if (command.getName().equalsIgnoreCase(TP.tpahere)) {
+			if (sender instanceof Player) {
+				if (args.length == 0) {
+					TP.tpUI((Player) sender, false);
+				} else if (args.length == 1) {
+					Player target = Bukkit.getPlayer(args[0]);
+					if (target.isOnline()) {
+						TP.tp((Player) sender, target, false);
 					}
 					return true;
 				}
@@ -43,5 +56,5 @@ public class TPPlugin extends JavaPlugin {
 		}
 		return false;
 	}
-	
+
 }
