@@ -1,14 +1,14 @@
 name: SF
-main: io.github.bugcreatorltq.Main
+main: io.github.bugcreatorltq.SFPlugin
 version: 1.0
 author: lain
 commands:
   send:
-    description: send items to other player what on you main hand
+    description: 发送
     usage: /<command> Player
   accept:
-    description: accept
+    description: 接收
     usage: /<command>
   ignore:
-    description: ignore
+    description: 拒绝
     usage: /<command>

@@ -53,12 +53,11 @@ public class Builder {
 	public class Array extends Basic {
 
 		protected Vector size;
-		protected Vector step;
+		protected Vector fix;
 
 		public Array(Vector size) {
-			this.size = size.clone();
-			step = size.clone();
-			step.divide(Vector.getMaximum(size, size.clone().multiply(-1)));
+			this.size = Vector.getMaximum(size,size.clone().multiply(-1));
+			this.fix = Vector.getMinimum(size,new Vector().zero());
 		}
 
 		public Array(int x, int y, int z) {
@@ -67,10 +66,10 @@ public class Builder {
 
 		@Override
 		protected void building(boolean flag) {
-			sender.sendMessage("step is " + step.toString());
-			for (int i = 0; i != size.getBlockX(); i += step.getBlockX()) {
-				for (int j = 0; j != size.getBlockY(); j += step.getBlockY()) {
-					for (int k = 0; k != size.getBlockZ(); k += step.getBlockZ()) {
+			builderLocation.add(fix);
+			for (int i = 0; i < size.getBlockX(); i ++) {
+				for (int j = 0; j < size.getBlockY(); j ++) {
+					for (int k = 0; k < size.getBlockZ(); k ++) {
 						setBlock(builderLocation.clone().add(i, j, k), type, flag);
 					}
 				}
@@ -97,8 +96,8 @@ public class Builder {
 			new Array(size.clone().setX(step.getBlockX())).build(flag);
 			new Array(size.clone().setZ(step.getBlockZ())).build(flag);
 			builderLocation.add(size.clone().setY(0));
-			new Array(size.clone().setX(step.getBlockX())).build(flag);
-			new Array(size.clone().setZ(step.getBlockZ())).build(flag);
+			new Array(-step.getBlockX(), size.getBlockY(), -size.getBlockZ()).build(flag);
+			new Array(-size.getBlockX(), size.getBlockY(), -step.getBlockZ()).build(flag);
 		}
 
 	}

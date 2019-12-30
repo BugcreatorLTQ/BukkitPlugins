@@ -6,31 +6,36 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class SFPlugin extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		// send sendItem
+		// 发送快递
 		if (command.getName().equalsIgnoreCase("send")) {
 			if (sender instanceof Player) {
 				if (args.length != 1) {
-					sender.sendMessage("arguments error!");
+					sender.sendMessage("参数错误!");
 					return false;
 				}
 				Player target = Bukkit.getPlayer(args[0]);
-				SF.send((Player) sender, target);
+				// 检查是否在线
+				if(!target.isOnline()) {
+					sender.sendMessage("玩家已离线");
+					return true;
+				}
+				SF.send((Player) sender, target, this);
 				return true;
 			}
 		}
-		// accept sendItem
-		if (command.getName().equalsIgnoreCase("accept")) {
+		// 接收快递
+		if (command.getName().equalsIgnoreCase(SF.yes)) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, true);
 				return true;
 			}
 		}
-		// ignore sendItem
-		if (command.getName().equalsIgnoreCase("ignore")) {
+		// 拒绝快递
+		if (command.getName().equalsIgnoreCase(SF.no)) {
 			if (sender instanceof Player) {
 				SF.accept((Player) sender, false);
 				return true;

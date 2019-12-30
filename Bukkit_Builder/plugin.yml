@@ -7,6 +7,14 @@ commands:
     description: You Can Build One array By This Command.
     usage: /<command> x y z T/F
     permission-message: "no permission"
+  cup:
+    description: You Can Build One cup By This Command.
+    usage: /<command> x y z T/F
+    permission-message: "no permission"
+  box:
+    description: You Can Build One box By This Command.
+    usage: /<command> x y z T/F
+    permission-message: "no permission"
   test:
     description: This Is A Test Command.
     usage: /<command> T/F
