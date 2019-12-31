@@ -1,4 +1,4 @@
-name: TP
+name: TPA
 main: io.github.bugcreatorltq.TPPlugin
 version: 1.1
 author: lain
@@ -12,6 +12,6 @@ commands:
   tpaccept:
     description: 接受传送请求
     usage: /<command>
-  tpignore:
+  tpaignore:
     description: 拒绝传送请求
     usage: /<command>

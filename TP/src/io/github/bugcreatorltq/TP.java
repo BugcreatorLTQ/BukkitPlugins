@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -76,7 +78,7 @@ public class TP implements Listener {
 		_accept.addExtra(_ignore);
 		target.spigot().sendMessage(_accept);
 	}
-	
+
 	/**
 	 * source 传送到 target
 	 * 
@@ -95,6 +97,7 @@ public class TP implements Listener {
 			// 避免重复传送
 			if (src == null || src != source) {
 				// 发送提示信息
+				source.sendMessage("请求已发送");
 				target.sendMessage(source.getName() + (dire ? "想要传送到你这里" : "邀请你传送到他那里"));
 				sendMessage(target);
 				// 覆盖别人传送
@@ -109,7 +112,8 @@ public class TP implements Listener {
 						}
 						source.sendMessage(target.getName() + "很长时间没有接受你的传送请求,已取消传送请求");
 						target.sendMessage("你很长时间没有接受" + source.getName() + "的传送请求,已取消传送请求");
-						tpMap.remove(target.getName());       
+						tpMap.remove(target.getName());
+						cancel();
 					}
 				}.runTaskLater(plugin, 30 * 20L);
 			} else {
@@ -138,6 +142,8 @@ public class TP implements Listener {
 		// 检查在线
 		if (source.isOnline() && target.isOnline()) {
 			if (flag) {
+				target.sendMessage("你同意了" + source.getName() + "的请求");
+				source.sendMessage(target.getName() + "同意了你的请求");
 				source.sendMessage("正在传送...");
 				// 传送
 				if (dire) {
@@ -147,7 +153,8 @@ public class TP implements Listener {
 				}
 				source.sendMessage("传送完成");
 			} else {
-				source.sendMessage("对方拒绝了你的请求");
+				target.sendMessage("你拒绝了" + source.getName() + "的请求");
+				source.sendMessage(target.getName() + "拒绝了你的请求");
 			}
 		}
 	}
@@ -191,7 +198,32 @@ public class TP implements Listener {
 		}
 	}
 
-	public void test(Player sender) {
+	// 清除玩家请求
+	private void clear(Player player) {
+		// 清除目标为自己的请求
+		if(tpMap.get(player.getName())!=null) {
+			tpMap.remove(player.getName());
+		}
+		// 清除请求人为自己的请求
+		for (Player target : Bukkit.getOnlinePlayers()) {
+			Player source = getSourcePlayer(target);
+			if(source != null && source==player) {
+				tpMap.remove(target.getName());
+			}
+		}
+	}
+	
+	// 添加玩家上线监听
+	@EventHandler
+	public void Player(PlayerJoinEvent player) {
+		clear(player.getPlayer());
+	}
+	
+	// 添加玩家下线监听
+	@EventHandler
+	public void onPlayerExit(PlayerQuitEvent player) {
+		clear(player.getPlayer());
+		
 	}
 
 }

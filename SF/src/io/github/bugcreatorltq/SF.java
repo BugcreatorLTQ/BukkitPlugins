@@ -5,6 +5,10 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,7 +26,7 @@ import net.md_5.bungee.api.chat.ClickEvent.Action;
  * @author lain
  *
  */
-public class SF {
+public class SF implements Listener {
 
 	public static String send = "send", accept = "sfaccept", ignore = "sfignore";
 
@@ -75,6 +79,10 @@ public class SF {
 		if (sfTruck.get(target.getName()) == null) {
 			// 储存快递信息
 			sfTruck.put(target.getName(), new Pair<String, ItemStack>(source.getName(), sendItem.clone()));
+			// 发送提示信息
+			source.sendMessage("请求已发送");
+			target.sendMessage(source.getName() + " 想给你" + getItemInfo(sendItem));
+			sendMessage(target);
 			// 30s后没有领取则取消快递
 			new BukkitRunnable() {
 				@Override
@@ -98,6 +106,7 @@ public class SF {
 						}
 						// 取消派送
 						sfTruck.remove(target.getName());
+						cancel();
 					}
 				}
 			}.runTaskLater(plugin, 30 * 20L);
@@ -108,9 +117,6 @@ public class SF {
 			sendMessage(target);
 			return;
 		}
-		// 发送提示信息
-		target.sendMessage(source.getName() + " 想给你" + getItemInfo(sendItem));
-		sendMessage(target);
 
 	}
 
@@ -149,8 +155,37 @@ public class SF {
 
 		} else {
 			// 拒绝
+			target.sendMessage("你拒绝了" + source.getName() + "的快递");
 			source.sendMessage(target.getName() + "拒绝了你的快递");
 		}
+
+	}
+
+	// 清除玩家请求
+	private void clear(Player player) {
+		// 清除目标为自己的请求
+		if (sfTruck.get(player.getName()) != null) {
+			sfTruck.remove(player.getName());
+		}
+		// 清除请求人为自己的请求
+		for (Player target : Bukkit.getOnlinePlayers()) {
+			Pair<String, ItemStack> source = sfTruck.get(target.getName());
+			if (source != null && source.getFirst() == player.getName()) {
+				sfTruck.remove(target.getName());
+			}
+		}
+	}
+
+	// 添加玩家上线监听
+	@EventHandler
+	public void Player(PlayerJoinEvent player) {
+		clear(player.getPlayer());
+	}
+
+	// 添加玩家下线监听
+	@EventHandler
+	public void onPlayerExit(PlayerQuitEvent player) {
+		clear(player.getPlayer());
 
 	}
 
