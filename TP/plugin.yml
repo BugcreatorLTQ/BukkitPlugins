@@ -9,9 +9,9 @@ commands:
   tpahere:
     description: 传送一个玩家到你所在位置
     usage: /<command> Player
-  tp_accept:
+  tpaccept:
     description: 接受传送请求
     usage: /<command>
-  tp_ignore:
+  tpignore:
     description: 拒绝传送请求
     usage: /<command>

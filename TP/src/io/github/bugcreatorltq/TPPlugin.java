@@ -22,6 +22,11 @@ public class TPPlugin extends JavaPlugin {
 					TP.tpUI((Player) sender, true);
 				} else if (args.length == 1) {
 					Player target = Bukkit.getPlayer(args[0]);
+					// 检查玩家合法性
+					if (target instanceof Player == false) {
+						sender.sendMessage("你只能发送给在线玩家");
+						return false;
+					}
 					if (target.isOnline()) {
 						TP.tp((Player) sender, target, true);
 					}
@@ -35,6 +40,10 @@ public class TPPlugin extends JavaPlugin {
 					TP.tpUI((Player) sender, false);
 				} else if (args.length == 1) {
 					Player target = Bukkit.getPlayer(args[0]);
+					if(target instanceof Player == false) {
+						sender.sendMessage("你只能发送给在线玩家");
+						return false;
+					}
 					if (target.isOnline()) {
 						TP.tp((Player) sender, target, false);
 					}

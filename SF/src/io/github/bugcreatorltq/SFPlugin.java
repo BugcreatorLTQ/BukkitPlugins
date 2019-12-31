@@ -18,6 +18,10 @@ public class SFPlugin extends JavaPlugin {
 					return false;
 				}
 				Player target = Bukkit.getPlayer(args[0]);
+				if(target instanceof Player == false) {
+					sender.sendMessage("你只能发送给在线玩家");
+					return false;
+				}
 				// 检查是否在线
 				if(!target.isOnline()) {
 					sender.sendMessage("玩家已离线");

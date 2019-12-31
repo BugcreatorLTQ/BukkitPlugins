@@ -33,7 +33,7 @@ public class TP implements Listener {
 	private static HashMap<String, Pair<String, Boolean>> tpMap = new HashMap<String, Pair<String, Boolean>>();
 	private static int boxSize = 4 * 9;
 	private static Plugin plugin;
-	public static String tpa = "tpa", tpahere = "tpahere", accept = "tp_accept", ignore = "tp_ignore", ui = "传送法阵";
+	public static String tpa = "tpa", tpahere = "tpahere", accept = "tpaccept", ignore = "tpaignore", ui = "传送法阵";
 
 	public static void setPlugin(Plugin plugin) {
 		TP.plugin = plugin;
@@ -111,7 +111,7 @@ public class TP implements Listener {
 						target.sendMessage("你很长时间没有接受" + source.getName() + "的传送请求,已取消传送请求");
 						tpMap.remove(target.getName());       
 					}
-				}.runTaskLater(plugin, 50 * 20L);
+				}.runTaskLater(plugin, 30 * 20L);
 			} else {
 				source.sendMessage("你已向该玩家发出过传送请求");
 			}
@@ -126,6 +126,7 @@ public class TP implements Listener {
 	 */
 	public static void accept(boolean flag, Player target) {
 		if (tpMap.get(target.getName()) == null) {
+			target.sendMessage("没有需要处理的信息");
 			return;
 		}
 		// 获取传送请求者

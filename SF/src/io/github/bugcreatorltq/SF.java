@@ -24,7 +24,7 @@ import net.md_5.bungee.api.chat.ClickEvent.Action;
  */
 public class SF {
 
-	public static String send = "sf_send", accept = "sf_accept", ignore = "sf_ignore";
+	public static String send = "send", accept = "sfaccept", ignore = "sfignore";
 
 	// 用于储存快递信息
 	private static HashMap<String, Pair<String, ItemStack>> sfTruck = new HashMap<String, Pair<String, ItemStack>>();
@@ -117,11 +117,12 @@ public class SF {
 	public static void accept(Player target, boolean flag) {
 		// 获取信息
 		Pair<String, ItemStack> pair = sfTruck.get(target.getName());
-		// 删除快递信息
-		sfTruck.remove(target.getName());
 		if (pair == null) {
+			target.sendMessage("没有需要处理的信息");
 			return;
 		}
+		// 删除快递信息
+		sfTruck.remove(target.getName());
 		Player source = Bukkit.getPlayer(pair.getFirst());
 		//
 		ItemStack sendItem = pair.getSecond();
