@@ -202,12 +202,14 @@ public class TP implements Listener {
 	private void clear(Player player) {
 		// 清除目标为自己的请求
 		if(tpMap.get(player.getName())!=null) {
+			getSourcePlayer(player).sendMessage(player.getName()+"已下线 取消你对该玩家的传送请求");
 			tpMap.remove(player.getName());
 		}
 		// 清除请求人为自己的请求
 		for (Player target : Bukkit.getOnlinePlayers()) {
 			Player source = getSourcePlayer(target);
 			if(source != null && source==player) {
+				target.sendMessage(player.getName()+"已下线 取消该玩家对你的传送请求");
 				tpMap.remove(target.getName());
 			}
 		}
@@ -223,7 +225,6 @@ public class TP implements Listener {
 	@EventHandler
 	public void onPlayerExit(PlayerQuitEvent player) {
 		clear(player.getPlayer());
-		
 	}
 
 }

@@ -9,6 +9,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class SFPlugin extends JavaPlugin {
 
 	@Override
+	public void onEnable() {
+		Bukkit.getPluginManager().registerEvents(new SF(), this);
+	}
+	
+	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// 发送快递
 		if (command.getName().equalsIgnoreCase(SF.send)) {

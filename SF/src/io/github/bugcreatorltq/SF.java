@@ -165,12 +165,14 @@ public class SF implements Listener {
 	private void clear(Player player) {
 		// 清除目标为自己的请求
 		if (sfTruck.get(player.getName()) != null) {
+			Bukkit.getPlayer(sfTruck.get(player.getName()).getFirst()).sendMessage(player.getName()+"已下线 取消你对该玩家的物品邮寄请求");
 			sfTruck.remove(player.getName());
 		}
 		// 清除请求人为自己的请求
 		for (Player target : Bukkit.getOnlinePlayers()) {
 			Pair<String, ItemStack> source = sfTruck.get(target.getName());
 			if (source != null && source.getFirst() == player.getName()) {
+				target.sendMessage(player.getName()+"已下线 取消该玩家对你的物品邮寄请求");
 				sfTruck.remove(target.getName());
 			}
 		}
@@ -186,7 +188,6 @@ public class SF implements Listener {
 	@EventHandler
 	public void onPlayerExit(PlayerQuitEvent player) {
 		clear(player.getPlayer());
-
 	}
 
 }
