@@ -33,7 +33,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class TP implements Listener {
 
 	private static HashMap<String, Pair<String, Boolean>> tpMap = new HashMap<String, Pair<String, Boolean>>();
-	private static int boxSize = 4 * 9;
 	private static Plugin plugin;
 	public static String tpa = "tpa", tpahere = "tpahere", accept = "tpaccept", ignore = "tpaignore", ui = "传送法阵";
 
@@ -163,7 +162,13 @@ public class TP implements Listener {
 	 * 创建TP界面
 	 */
 	public static void tpUI(Player source, boolean dire) {
-		Inventory tp_ui = Bukkit.createInventory(null, boxSize, ui);
+		int size = Bukkit.getOnlinePlayers().size() - 1;
+		size = ((size + 8) / 9) * 9;
+		if (size == 0) {
+			source.sendMessage("You are the king of the world!\n(世界上只剩你一个人了)");
+			return;
+		}
+		Inventory tp_ui = Bukkit.createInventory(null, size, ui);
 		Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
 			if (player.equals(source)) {
@@ -184,43 +189,44 @@ public class TP implements Listener {
 	public void onInventoryClick(InventoryClickEvent e) {
 		if (e.getRawSlot() < 0 || e.getRawSlot() > e.getInventory().getSize() || e.getInventory() == null)
 			return;
+		if (e.getView().getTitle() != ui) {
+			return;
+		}
+		// 禁止拿物品
+		e.setCancelled(true);
 		Material type = e.getCurrentItem().getType();
 		if (type.equals(Material.EGG) || type.equals(Material.BONE)) {
 			boolean dire = type == Material.EGG;
-			if (e.getInventory().getSize() == boxSize) {
-				// 禁止拿物品
-				e.setCancelled(true);
-				// 获取目标
-				Player target = Bukkit.getPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
-				// 请求传送
-				tp((Player) e.getWhoClicked(), target, dire);
-			}
+			// 获取目标
+			Player target = Bukkit.getPlayer(e.getCurrentItem().getItemMeta().getDisplayName());
+			// 请求传送
+			tp((Player) e.getWhoClicked(), target, dire);
 		}
 	}
 
 	// 清除玩家请求
 	private void clear(Player player) {
 		// 清除目标为自己的请求
-		if(tpMap.get(player.getName())!=null) {
-			getSourcePlayer(player).sendMessage(player.getName()+"已下线 取消你对该玩家的传送请求");
+		if (tpMap.get(player.getName()) != null) {
+			getSourcePlayer(player).sendMessage(player.getName() + "已下线 取消你对该玩家的传送请求");
 			tpMap.remove(player.getName());
 		}
 		// 清除请求人为自己的请求
 		for (Player target : Bukkit.getOnlinePlayers()) {
 			Player source = getSourcePlayer(target);
-			if(source != null && source==player) {
-				target.sendMessage(player.getName()+"已下线 取消该玩家对你的传送请求");
+			if (source != null && source == player) {
+				target.sendMessage(player.getName() + "已下线 取消该玩家对你的传送请求");
 				tpMap.remove(target.getName());
 			}
 		}
 	}
-	
+
 	// 添加玩家上线监听
 	@EventHandler
 	public void Player(PlayerJoinEvent player) {
 		clear(player.getPlayer());
 	}
-	
+
 	// 添加玩家下线监听
 	@EventHandler
 	public void onPlayerExit(PlayerQuitEvent player) {

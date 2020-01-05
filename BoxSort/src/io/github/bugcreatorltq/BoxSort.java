@@ -3,9 +3,12 @@ package io.github.bugcreatorltq;
 import java.util.Comparator;
 import java.util.LinkedList;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +27,7 @@ public class BoxSort implements Listener {
 
 			@Override
 			public int compare(ItemStack arg0, ItemStack arg1) {
-				return arg1.getType().ordinal() - arg0.getType().ordinal();
+				return arg0.getType().ordinal() - arg1.getType().ordinal();
 			}
 		});
 		return items;
@@ -40,26 +43,48 @@ public class BoxSort implements Listener {
 	}
 
 	// 排序玩家背包
-	private void sortPlayer(Inventory inventory) {
-
+	public void sortPlayer(Inventory inventory) {
 		ItemStack[] content = inventory.getContents().clone();
 		inventory.clear();
+		// 背包
+		for (ItemStack item : sort(content, 9, content.length - 5)) {
+			inventory.addItem(item);
+		}
+		ItemStack[] temp = inventory.getContents().clone();
+		inventory.clear();
+		// 工具栏
 		for (ItemStack item : sort(content, 0, 9)) {
 			inventory.addItem(item);
 		}
-		int index = 9;
-		for (ItemStack item : sort(content, 9, content.length)) {
-			inventory.setItem(index++, item);
+		// 背包栏
+		for (int i = 0; i < 3 * 9; i++) {
+			inventory.setItem(i + 9, temp[i]);
+		}
+		// 装备栏
+		for (int i = content.length - 5; i < content.length; i++) {
+			inventory.setItem(i, content[i]);
 		}
 	}
 
 	@EventHandler
-	public void onOpenBox(InventoryOpenEvent e) {
-		Inventory inventory = e.getInventory();
+	public void onClick(InventoryClickEvent e) {
+		if (!e.getInventory().getType().equals(InventoryType.CHEST)) {
+			return;
+		}
+		if (e.getClick() != ClickType.MIDDLE) {
+			return;
+		}
+		Inventory inventory = e.getClickedInventory();
 		if (inventory.getType().equals(InventoryType.CHEST)) {
 			sort(inventory);
-			sortPlayer(e.getPlayer().getInventory());
+		} else if (inventory.getType().equals(InventoryType.PLAYER)) {
+			sortPlayer(inventory);
+		} else {
+			return;
 		}
+		Player player = Bukkit.getPlayer(e.getWhoClicked().getName());
+		player.closeInventory();
+		player.openInventory(e.getInventory());
 	}
 
 }
