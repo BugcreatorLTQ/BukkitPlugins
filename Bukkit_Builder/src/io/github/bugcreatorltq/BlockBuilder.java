@@ -1,4 +1,4 @@
-package happecoder;
+package io.github.bugcreatorltq;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class Builder {
+public class BlockBuilder {
 
 	private Location builderLocation;
 	// Block Type
@@ -14,7 +14,7 @@ public class Builder {
 	// sender
 	CommandSender sender;
 
-	public Builder(CommandSender sender) {
+	public BlockBuilder(CommandSender sender) {
 		if (sender instanceof Player) {
 			this.sender = sender;
 			builderLocation = ((Player) sender).getLocation();
@@ -56,8 +56,8 @@ public class Builder {
 		protected Vector fix;
 
 		public Array(Vector size) {
-			this.size = Vector.getMaximum(size,size.clone().multiply(-1));
-			this.fix = Vector.getMinimum(size,new Vector().zero());
+			this.size = Vector.getMaximum(size, size.clone().multiply(-1));
+			this.fix = Vector.getMinimum(size, new Vector().zero());
 		}
 
 		public Array(int x, int y, int z) {
@@ -67,9 +67,9 @@ public class Builder {
 		@Override
 		protected void building(boolean flag) {
 			builderLocation.add(fix);
-			for (int i = 0; i < size.getBlockX(); i ++) {
-				for (int j = 0; j < size.getBlockY(); j ++) {
-					for (int k = 0; k < size.getBlockZ(); k ++) {
+			for (int i = 0; i < size.getBlockX(); i++) {
+				for (int j = 0; j < size.getBlockY(); j++) {
+					for (int k = 0; k < size.getBlockZ(); k++) {
 						setBlock(builderLocation.clone().add(i, j, k), type, flag);
 					}
 				}
@@ -144,7 +144,9 @@ public class Builder {
 		@Override
 		protected void building(boolean flag) {
 			if (flag) {
-				new Array(2, 3, 4).build(flag);
+				for (int i = 100; i >= 10; i -= 10) {
+					new Array(i, -1, i).build(flag);
+				}
 				return;
 			}
 		}

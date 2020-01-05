@@ -1,0 +1,6 @@
+name: _Nichijou
+main: io.github.bugcreatorltq.NichijouPlugin
+version: 1.0
+author: lain
+commands:
+  test:

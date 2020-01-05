@@ -1,14 +1,14 @@
-package happecoder;
+package io.github.bugcreatorltq;
 
 	import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class BlockBuilderPlugin extends JavaPlugin {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		Builder builder = new Builder(sender);
+		BlockBuilder builder = new BlockBuilder(sender);
 		if (command.getName().equalsIgnoreCase("test")) {
 			builder.new Test().build(true);
 		}
