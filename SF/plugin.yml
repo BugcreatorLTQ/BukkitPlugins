@@ -1,6 +1,6 @@
 name: _SF
 main: io.github.bugcreatorltq.SFPlugin
-version: 1.3
+version: 1.4
 author: lain
 commands:
   send:
