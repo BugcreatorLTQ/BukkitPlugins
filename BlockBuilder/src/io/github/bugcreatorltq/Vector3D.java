@@ -159,6 +159,11 @@ public class Vector3D {
 		return max(vector3d.x, vector3d.y, vector3d.z);
 	}
 
+	public int max() {
+		int t = x > y ? x : y;
+		return t > z ? t : z;
+	}
+
 	public Vector3D min(int x, int y, int z) {
 		Vector3D result = clone();
 		result.x = result.x < x ? result.x : x;
@@ -169,6 +174,11 @@ public class Vector3D {
 
 	public Vector3D min(Vector3D vector3d) {
 		return min(vector3d.x, vector3d.y, vector3d.z);
+	}
+
+	public int min() {
+		int t = x < y ? x : y;
+		return t < z ? t : z;
 	}
 
 }

@@ -9,5 +9,9 @@ commands:
     description: You Can Build One cup By This Command.
   box:
     description: You Can Build One box By This Command.
+  line:
+    description: You Can Build One line By This Command.
+  flat:
+    description: You Can Build One flat By This Command.
   test:
     description: This Is A Test Command.
