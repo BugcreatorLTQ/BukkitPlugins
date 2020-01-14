@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
 
@@ -22,7 +23,7 @@ public class ImageDrawer {
 	public static void draw(CommandSender sender, String imageUrl) {
 		try {
 			sender.sendMessage("正在读取...");
-			BufferedImage image = readImage(imageUrl);
+			BufferedImage image = readImage(new URL(imageUrl));
 			if (image == null) {
 				return;
 			}
@@ -30,8 +31,8 @@ public class ImageDrawer {
 			sender.sendMessage("height is " + image.getHeight());
 			image = scale(image, 100);
 			sender.sendMessage("缩放至(" + image.getWidth() + "," + image.getHeight() + ")");
-			sender.sendMessage("开始二值化");
-			working(image, Type.Limit);
+			sender.sendMessage("开始灰度化");
+			working(image, Type.Gry);
 			sender.sendMessage("开始绘制");
 			drawing(sender, image);
 			sender.sendMessage("绘制结束");
@@ -84,6 +85,13 @@ public class ImageDrawer {
 	}
 
 	static void drawing(CommandSender sender, BufferedImage image) {
+		LinkedList<Material> colors = new LinkedList<Material>();
+		colors.add(Material.BLACK_WOOL);
+		colors.add(Material.GRAY_WOOL);
+		colors.add(Material.LIGHT_GRAY_TERRACOTTA);
+		colors.add(Material.LIGHT_GRAY_WOOL);
+		colors.add(Material.WHITE_TERRACOTTA);
+		colors.add(Material.WHITE_WOOL);
 		if (image.getHeight() > 200) {
 			sender.sendMessage("图片尺寸过大");
 		}
@@ -93,7 +101,7 @@ public class ImageDrawer {
 		for (int i = 0; i < image.getWidth(); i++) {
 			for (int j = 0; j < image.getHeight(); j++) {
 				RGB rgb = new RGB(image.getRGB(i, j));
-				location.getBlock().setType(rgb.getA() == 0 ? Material.BLACK_WOOL : Material.WHITE_WOOL);
+				location.clone().add(0, -j, i).getBlock().setType(colors.get(rgb.getB() * colors.size() / 255));
 			}
 		}
 	}

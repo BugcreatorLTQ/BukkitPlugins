@@ -1,6 +1,6 @@
 name: _ImageDrawer
 main: io.github.bugcreatorltq.ImageDrawerPlugin
-version: 1.1
+version: 1.2
 author: lain
 commands:
   draw:
