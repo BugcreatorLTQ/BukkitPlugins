@@ -1,7 +1,9 @@
 name: _ImageDrawer
 main: io.github.bugcreatorltq.ImageDrawerPlugin
-version: 1.2
+version: 1.4
 author: lain
 commands:
   draw:
     description: 画一张画
+  colors:
+    description: 展示颜色空间

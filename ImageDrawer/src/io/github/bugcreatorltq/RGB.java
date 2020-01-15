@@ -6,7 +6,10 @@ public class RGB {
 		Limit, Gry, Dark
 	}
 
-	private int a, r, g, b;
+	private int a;
+	protected int r;
+	protected int g;
+	protected int b;
 
 	RGB(int a, int r, int g, int b) {
 		this.a = a;
@@ -78,5 +81,12 @@ public class RGB {
 	@Override
 	public String toString() {
 		return "(" + a + "," + r + "," + g + "," + b + ")";
+	}
+
+	public Index toIndex(int size) {
+		r = r * size / 256;
+		g = g * size / 256;
+		b = b * size / 256;
+		return new Index(r, g, b);
 	}
 }
