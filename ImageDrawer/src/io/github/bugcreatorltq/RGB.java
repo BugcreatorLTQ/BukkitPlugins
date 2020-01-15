@@ -64,10 +64,6 @@ public class RGB {
 	}
 
 	public RGB toDark(double scale) {
-		if (scale < 0 || scale > 1) {
-			System.err.println("scale must < 1");
-			return this;
-		}
 		r *= scale;
 		g *= scale;
 		b *= scale;
@@ -89,4 +85,5 @@ public class RGB {
 		b = b * size / 256;
 		return new Index(r, g, b);
 	}
+
 }

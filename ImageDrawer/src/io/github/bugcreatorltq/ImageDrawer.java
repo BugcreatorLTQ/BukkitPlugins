@@ -54,14 +54,13 @@ public class ImageDrawer {
 	public static void init() {
 		Queue<Index> queue = new LinkedList<Index>();
 		color = new LinkedList<Pair<Material, Index>>();
-//		color.add(new Pair<Material, Index>(Material.WHITE_WOOL, new Index(145, 145, 145)));
-		color.add(new Pair<Material, Index>(Material.WHITE_WOOL, new Index(245, 245, 245)));
-		color.add(new Pair<Material, Index>(Material.ORANGE_WOOL, new Index(134, 58, 1)));
-		color.add(new Pair<Material, Index>(Material.LIGHT_BLUE_WOOL, new Index(31, 101, 127)));
+		color.add(new Pair<Material, Index>(Material.WHITE_WOOL, new Index(125, 125, 125)));
+		color.add(new Pair<Material, Index>(Material.ORANGE_WOOL, new Index(124, 58, 1)));
 		color.add(new Pair<Material, Index>(Material.MAGENTA_WOOL, new Index(105, 33, 99)));
-		color.add(new Pair<Material, Index>(Material.YELLOW_WOOL, new Index(149, 122, 26)));
+		color.add(new Pair<Material, Index>(Material.LIGHT_BLUE_WOOL, new Index(31, 101, 120)));
+		color.add(new Pair<Material, Index>(Material.YELLOW_WOOL, new Index(119, 122, 26)));
 		color.add(new Pair<Material, Index>(Material.LIME_WOOL, new Index(73, 116, 16)));
-		color.add(new Pair<Material, Index>(Material.PINK_WOOL, new Index(145, 84, 102)));
+		color.add(new Pair<Material, Index>(Material.PINK_WOOL, new Index(125, 84, 102)));
 		color.add(new Pair<Material, Index>(Material.GRAY_WOOL, new Index(34, 34, 34)));
 		color.add(new Pair<Material, Index>(Material.LIGHT_GRAY_WOOL, new Index(76, 76, 76)));
 		color.add(new Pair<Material, Index>(Material.CYAN_WOOL, new Index(12, 79, 84)));
@@ -74,8 +73,8 @@ public class ImageDrawer {
 //		Material.TERRACOTTA
 		color.add(new Pair<Material, Index>(Material.WHITE_TERRACOTTA, new Index(124, 105, 95)));
 		color.add(new Pair<Material, Index>(Material.ORANGE_TERRACOTTA, new Index(97, 50, 23)));
-		color.add(new Pair<Material, Index>(Material.LIGHT_BLUE_TERRACOTTA, new Index(88, 51, 64)));
-		color.add(new Pair<Material, Index>(Material.MAGENTA_TERRACOTTA, new Index(68, 65, 82)));
+		color.add(new Pair<Material, Index>(Material.MAGENTA_TERRACOTTA, new Index(88, 51, 64)));
+		color.add(new Pair<Material, Index>(Material.LIGHT_BLUE_TERRACOTTA, new Index(68, 65, 82)));
 		color.add(new Pair<Material, Index>(Material.YELLOW_TERRACOTTA, new Index(110, 78, 21)));
 		color.add(new Pair<Material, Index>(Material.LIME_TERRACOTTA, new Index(62, 69, 31)));
 		color.add(new Pair<Material, Index>(Material.PINK_TERRACOTTA, new Index(96, 46, 47)));
@@ -89,9 +88,28 @@ public class ImageDrawer {
 		color.add(new Pair<Material, Index>(Material.RED_TERRACOTTA, new Index(86, 37, 28)));
 		color.add(new Pair<Material, Index>(Material.BLACK_TERRACOTTA, new Index(22, 13, 9)));
 		color.add(new Pair<Material, Index>(Material.TERRACOTTA, new Index(89, 55, 40)));
+		// Material.CONCRETE
+		color.add(new Pair<Material, Index>(Material.WHITE_CONCRETE, new Index(123, 125, 125)));
+		color.add(new Pair<Material, Index>(Material.ORANGE_CONCRETE, new Index(123, 58, 1)));
+		color.add(new Pair<Material, Index>(Material.MAGENTA_CONCRETE, new Index(100, 28, 94)));
+		color.add(new Pair<Material, Index>(Material.LIGHT_BLUE_CONCRETE, new Index(68, 65, 82)));
+		color.add(new Pair<Material, Index>(Material.YELLOW_CONCRETE, new Index(123, 105, 13)));
+		color.add(new Pair<Material, Index>(Material.LIME_CONCRETE, new Index(55, 99, 14)));
+		color.add(new Pair<Material, Index>(Material.PINK_CONCRETE, new Index(125, 60, 85)));
+		color.add(new Pair<Material, Index>(Material.GRAY_CONCRETE, new Index(32, 34, 36)));
+		color.add(new Pair<Material, Index>(Material.LIGHT_GRAY_CONCRETE, new Index(74, 74, 68)));
+		color.add(new Pair<Material, Index>(Material.CYAN_CONCRETE, new Index(12, 71, 81)));
+		color.add(new Pair<Material, Index>(Material.PURPLE_CONCRETE, new Index(59, 18, 92)));
+		color.add(new Pair<Material, Index>(Material.BLUE_CONCRETE, new Index(26, 27, 85)));
+		color.add(new Pair<Material, Index>(Material.BROWN_CONCRETE, new Index(57, 36, 19)));
+		color.add(new Pair<Material, Index>(Material.GREEN_CONCRETE, new Index(43, 54, 21)));
+		color.add(new Pair<Material, Index>(Material.RED_CONCRETE, new Index(84, 19, 19)));
+		color.add(new Pair<Material, Index>(Material.BLACK_CONCRETE, new Index(5, 6, 9)));
+		// other color
+//		color.add(new Pair<Material, Index>(Material, new Index()));
 		for (Pair<Material, Index> pair : color) {
 			Index index = pair.getSecond();
-			((RGB) index).toIndex(getColorSize());
+			((RGB) index).toDark(2).toIndex(getColorSize());
 		}
 		int size = getColorSize();
 		colors = new Material[size][size][size];
